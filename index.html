@@ -20,15 +20,15 @@
       <h2>Monster Health</h2>
       <div class="healthbar">
         <div class="healthbar__value" :style="cpuBarStyles"></div>
-        <p> {{cpuHp}} </p>
       </div>
+      <p> {{cpuHp}} / 100 </p>
     </section>
     <section id="player" class="container">
       <h2>Your Health</h2>
       <div class="healthbar">
         <div class="healthbar__value" :style="playerBarStyles"></div>
-        <p> {{playerHp}} </p>
       </div>
+      <p> {{playerHp}} / 100 </p>
     </section>
     <!-- Only shows when winner has a value  -->
     <section class="container" v-if="winner">
@@ -48,8 +48,17 @@
     <section id="log" class="container">
       <h2>Battle Log</h2>
       <ul>
-        <li v-for="action in actionsEvent">
-          <span> {{action.actionBy === 'player' ? 'Player' : 'CPU' }} </span>
+        <li v-for="action in logMessages">
+          <span :class="{'log--player': action.actionBy === 'player', 'log--monster': action.actionBy === 'monster'}">
+            {{action.actionBy === 'Player' ? 'Player' : 'CPU' }}
+          </span>
+          <span v-if="action.actionType === 'heal'">
+            heals himself for
+            <span class="log--heal">{{ action.actionValue }}</span></span>
+          <span v-else>
+            attacks and deals
+            <span class="log--damage">{{ action.actionValue }}</span>
+          </span>
         </li>
       </ul>
     </section>

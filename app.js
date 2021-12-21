@@ -34,6 +34,9 @@ const app = Vue.createApp({
             }
             return { width: this.playerHealth + '%' }
         },
+        toggleSpecialAttack() {
+            return this.currentRound % 3 !== 0 || this.currentRound == 0
+        },
     },
     watch: {
         playerHealth(value) {
@@ -50,9 +53,7 @@ const app = Vue.createApp({
                 this.winner = 'Player'
             }
         },
-        toggleSpecialAttack() {
-            return this.currentRound % 3 == 0
-        },
+        
     },
     methods: {
         startGame(){
@@ -72,22 +73,26 @@ const app = Vue.createApp({
             this.cpuHp -= attackValue
             this.addLogMessage('Player','attack', attackValue)
             this.cpuAttacks()
+            
         },
         specialAttack() {
+            this.currentRound++
             const attackValue = getRandomValue(10, 25)
             this.cpuHealth -= attackValue
+            this.cpuHp -= attackValue
             this.addLogMessage('Player','delivers special-attack', attackValue)
             this.cpuAttacks()
+            
         },
         cpuAttacks() {
             const attackValue = getRandomValue(8, 15)
             this.playerHealth -= attackValue
             this.playerHp = this.playerHp - attackValue
             this.addLogMessage('CPU','attack', attackValue)
-            console.log(`Num: ${this.currentRound}`)
-            console.log(`%: ${this.currentRound % 3}`)
-            console.log(`/: ${this.currentRound / 3}`)
-            console.log(`Floor /: ${Math.floor(this.currentRound / 3)}`)
+            // console.log(`Num: ${this.currentRound}`)
+            // console.log(`%: ${this.currentRound % 3}`)
+            // console.log(`/: ${this.currentRound / 3}`)
+            // console.log(`Floor /: ${Math.floor(this.currentRound / 3)}`)
         },
 
         healPlayer() {
